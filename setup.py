@@ -11,7 +11,7 @@ setuptools.setup(
     description="Telegram album sender.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/gaoyunzhi/album_sender",
+    url="https://github.com/gaoyunzhi/telegram_album_sender",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
