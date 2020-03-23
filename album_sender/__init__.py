@@ -9,7 +9,7 @@ import cached_url
 import pic_cut
 from telegram_util import cutCaption
 
-def send(chat, url, result, rotate=False):
+def send(chat, url, result, rotate=0):
 	suffix = '[source](%s)' % url
 
 	if result.video:
@@ -25,7 +25,9 @@ def send(chat, url, result, rotate=False):
 		if rotate:
 			for img_path in imgs:
 				img = Image.open(img_path)
-				img = img.rotate(180)
+				if rotate == True:
+					rotate = 180
+				img = img.rotate(rotate)
 				img.save(img_path)
 		group = [InputMediaPhoto(open(imgs[0], 'rb'), 
 			caption=cutCaption(result.cap, suffix, 1000), parse_mode='Markdown')] + \
