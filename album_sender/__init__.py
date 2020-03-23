@@ -32,5 +32,6 @@ def send(chat, url, result, rotate=False):
 			[InputMediaPhoto(open(x, 'rb')) for x in imgs[1:]]
 		return chat.bot.send_media_group(chat.id, group, timeout = 20*60)
 
-	chat.send_message(cutCaption(result.cap, suffix, 4000), 
-		timeout = 20*60)
+	if result.cap:
+		chat.send_message(cutCaption(result.cap, suffix, 4000), 
+			parse_mode='Markdown', timeout = 20*60)
