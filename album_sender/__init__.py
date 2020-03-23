@@ -23,11 +23,11 @@ def send(chat, url, result, rotate=0):
 	if imgs:
 		imgs = pic_cut.getCutImages(result.imgs, 9)
 		if rotate:
+			if rotate == True:
+				rotate = 180
 			for img_path in imgs:
 				img = Image.open(img_path)
-				if rotate == True:
-					rotate = 180
-				img = img.rotate(rotate)
+				img = img.rotate(rotate, expand=True)
 				img.save(img_path)
 		group = [InputMediaPhoto(open(imgs[0], 'rb'), 
 			caption=cutCaption(result.cap, suffix, 1000), parse_mode='Markdown')] + \
