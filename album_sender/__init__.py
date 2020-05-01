@@ -8,6 +8,11 @@ from telegram import InputMediaPhoto, InputMediaVideo
 import cached_url
 import pic_cut
 from telegram_util import cutCaption
+import os
+
+def properSize(fn):
+	size = os.stat(fn).st_size
+	return 0 < size and size < (1 << 20)
 
 def send(chat, url, result, rotate=0):
 	suffix = '[source](%s)' % url
@@ -29,6 +34,7 @@ def send(chat, url, result, rotate=0):
 				img = Image.open(img_path)
 				img = img.rotate(rotate, expand=True)
 				img.save(img_path)
+		imgs = [x for x in imgs if properSize(x)]
 		group = [InputMediaPhoto(open(imgs[0], 'rb'), 
 			caption=cutCaption(result.cap, suffix, 1000), parse_mode='Markdown')] + \
 			[InputMediaPhoto(open(x, 'rb')) for x in imgs[1:]]
