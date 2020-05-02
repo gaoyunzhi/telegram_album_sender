@@ -25,8 +25,8 @@ def send(chat, url, result, rotate=0):
 		return chat.bot.send_media_group(chat.id, group, timeout = 20*60)
 		
 	imgs = pic_cut.getCutImages(result.imgs, 9)	
+	imgs = [x for x in imgs if properSize(x)]
 	if imgs:
-		imgs = pic_cut.getCutImages(result.imgs, 9)
 		if rotate:
 			if rotate == True:
 				rotate = 180
@@ -34,7 +34,6 @@ def send(chat, url, result, rotate=0):
 				img = Image.open(img_path)
 				img = img.rotate(rotate, expand=True)
 				img.save(img_path)
-		imgs = [x for x in imgs if properSize(x)]
 		group = [InputMediaPhoto(open(imgs[0], 'rb'), 
 			caption=cutCaption(result.cap, suffix, 1000), parse_mode='Markdown')] + \
 			[InputMediaPhoto(open(x, 'rb')) for x in imgs[1:]]
