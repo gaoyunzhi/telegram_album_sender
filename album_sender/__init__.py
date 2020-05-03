@@ -12,7 +12,7 @@ import os
 
 def properSize(fn):
 	size = os.stat(fn).st_size
-	return 0 < size and size < (1 << 20)
+	return 0 < size and size < (1 << 23)
 
 def send(chat, url, result, rotate=0):
 	suffix = '[source](%s)' % url
