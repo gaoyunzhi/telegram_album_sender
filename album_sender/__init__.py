@@ -10,6 +10,15 @@ import pic_cut
 from telegram_util import cutCaption
 import os
 
+def isAnimated(path):
+	gif = Image.open(path)
+	try:
+		gif.seek(1)
+	except EOFError:
+		return False
+	else:
+		return True
+
 def properSize(fn):
 	size = os.stat(fn).st_size
 	return 0 < size and size < (1 << 23)
@@ -34,9 +43,13 @@ def send(chat, url, result, rotate=0):
 				img = Image.open(img_path)
 				img = img.rotate(rotate, expand=True)
 				img.save(img_path)
+		cap = cutCaption(result.cap, suffix, 1000)
 		group = [InputMediaPhoto(open(imgs[0], 'rb'), 
-			caption=cutCaption(result.cap, suffix, 1000), parse_mode='Markdown')] + \
+			caption=cap, parse_mode='Markdown')] + \
 			[InputMediaPhoto(open(x, 'rb')) for x in imgs[1:]]
+		if isAnimated(imgs[0]):
+			return chat.bot.send_document(chat.id, open(imgs[0], 'rb'), 
+				caption=cap, parse_mode='Markdown', timeout = 20*60)
 		return chat.bot.send_media_group(chat.id, group, timeout = 20*60)
 
 	if result.cap:
