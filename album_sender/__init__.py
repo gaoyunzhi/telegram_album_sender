@@ -11,7 +11,10 @@ from telegram_util import cutCaption
 import os
 
 def isAnimated(path):
-	gif = Image.open(path)
+	fn = 'tmp_image/' + os.path.basename(path)
+	with open(fn, 'wb') as f:
+		f.write(cached_url.get(path, force_cache=True, mode='b'))
+	gif = Image.open(fn)
 	try:
 		gif.seek(1)
 	except EOFError:
@@ -32,6 +35,12 @@ def send(chat, url, result, rotate=0):
 		group = [InputMediaVideo(open('tmp/video.mp4', 'rb'), 
 			caption=cutCaption(result.cap, suffix, 1000), parse_mode='Markdown')]
 		return chat.bot.send_media_group(chat.id, group, timeout = 20*60)
+
+	cap = cutCaption(result.cap, suffix, 1000)
+	if result.imgs and isAnimated(result.imgs[0]):
+		return chat.bot.send_document(chat.id, 
+			open('tmp_image/' + os.path.basename(result.imgs[0]), 'rb'), 
+			caption=cap, parse_mode='Markdown', timeout = 20*60)
 		
 	imgs = pic_cut.getCutImages(result.imgs, 9)	
 	imgs = [x for x in imgs if properSize(x)]
@@ -43,13 +52,9 @@ def send(chat, url, result, rotate=0):
 				img = Image.open(img_path)
 				img = img.rotate(rotate, expand=True)
 				img.save(img_path)
-		cap = cutCaption(result.cap, suffix, 1000)
 		group = [InputMediaPhoto(open(imgs[0], 'rb'), 
 			caption=cap, parse_mode='Markdown')] + \
 			[InputMediaPhoto(open(x, 'rb')) for x in imgs[1:]]
-		if isAnimated(imgs[0]):
-			return chat.bot.send_document(chat.id, open(imgs[0], 'rb'), 
-				caption=cap, parse_mode='Markdown', timeout = 20*60)
 		return chat.bot.send_media_group(chat.id, group, timeout = 20*60)
 
 	if result.cap:

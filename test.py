@@ -16,7 +16,7 @@ def test(url):
 	album_sender.send(chat, url, result)	
 	
 if __name__=='__main__':
-	test('https://www.douban.com/people/68848724/status/2942117860')
+	test('https://www.douban.com/people/46037668/status/2956088549/')
 	# test('https://www.douban.com/people/kinokinokino/status/2947364315/')
 	
 
