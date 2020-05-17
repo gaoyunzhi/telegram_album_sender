@@ -7,14 +7,12 @@ from PIL import Image
 from telegram import InputMediaPhoto, InputMediaVideo
 import cached_url
 import pic_cut
-from telegram_util import cutCaption
+from telegram_util import cutCaption, getBaseName
 import os
 
 def isAnimated(path):
-	fn = 'tmp_image/' + os.path.basename(path.replace('=', '.'))
-	with open(fn, 'wb') as f:
-		f.write(cached_url.get(path, force_cache=True, mode='b'))
-	gif = Image.open(fn)
+	cached_url.get(path, force_cache=True, mode='b')
+	gif = Image.open(cached_url.getFilePath(path))
 	try:
 		gif.seek(1)
 	except EOFError:
@@ -25,6 +23,20 @@ def isAnimated(path):
 def properSize(fn):
 	size = os.stat(fn).st_size
 	return 0 < size and size < (1 << 23)
+
+def shouldSendAnimation(result):
+	if not result.imgs:
+		return False
+	animated_imgs = [x for x in result.imgs if isAnimated(x)]
+	non_animated_imgs = [x for x in result.imgs if not isAnimated(x)]
+	if len(non_animated_imgs) > len(animated_imgs): # may need to revisit
+		result.imgs = non_animated_imgs
+		return False
+	animated_imgs = [(os.stat(cached_url.getFilePath(x)).st_size, 
+		x) for x in animated_imgs]
+	animated_imgs.sort()
+	result.imgs = animated_imgs[-1:]
+	return True
 
 def send(chat, url, result, rotate=0):
 	suffix = '[source](%s)' % url
@@ -37,9 +49,9 @@ def send(chat, url, result, rotate=0):
 		return chat.bot.send_media_group(chat.id, group, timeout = 20*60)
 
 	cap = cutCaption(result.cap, suffix, 1000)
-	if result.imgs and isAnimated(result.imgs[0]):
+	if shouldSendAnimation(result):
 		return chat.bot.send_document(chat.id, 
-			open('tmp_image/' + os.path.basename(result.imgs[0]), 'rb'), 
+			open(cached_url.getFilePath(result.imgs[0]), 'rb'), 
 			caption=cap, parse_mode='Markdown', timeout = 20*60)
 		
 	imgs = pic_cut.getCutImages(result.imgs, 9)	
