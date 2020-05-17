@@ -11,7 +11,7 @@ from telegram_util import cutCaption
 import os
 
 def isAnimated(path):
-	fn = 'tmp_image/' + os.path.basename(path)
+	fn = 'tmp_image/' + os.path.basename(path.replace('=', '.'))
 	with open(fn, 'wb') as f:
 		f.write(cached_url.get(path, force_cache=True, mode='b'))
 	gif = Image.open(fn)
