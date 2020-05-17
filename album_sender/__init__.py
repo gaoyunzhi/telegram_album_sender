@@ -7,7 +7,7 @@ from PIL import Image
 from telegram import InputMediaPhoto, InputMediaVideo
 import cached_url
 import pic_cut
-from telegram_util import cutCaption, getBaseName
+from telegram_util import cutCaption
 import os
 
 def isAnimated(path):
