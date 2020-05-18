@@ -35,7 +35,7 @@ def shouldSendAnimation(result):
 	animated_imgs = [(os.stat(cached_url.getFilePath(x)).st_size, 
 		x) for x in animated_imgs]
 	animated_imgs.sort()
-	result.imgs = animated_imgs[-1:]
+	result.imgs = [animated_imgs[-1][1]]
 	return True
 
 def send(chat, url, result, rotate=0):
