@@ -7,7 +7,7 @@ from PIL import Image
 from telegram import InputMediaPhoto, InputMediaVideo
 import cached_url
 import pic_cut
-from telegram_util import cutCaption
+from telegram_util import cutCaption, isUrl
 import os
 
 def isAnimated(path):
@@ -71,4 +71,5 @@ def send(chat, url, result, rotate=0):
 
 	if result.cap:
 		return [chat.send_message(cutCaption(result.cap, suffix, 4000), 
-			parse_mode='Markdown', timeout = 20*60)]
+			parse_mode='Markdown', timeout = 20*60, 
+			disable_web_page_preview = !isUrl(result.cap))]
