@@ -44,6 +44,8 @@ def send(chat, url, result, rotate=0):
 	if result.video:
 		with open('tmp/video.mp4', 'wb') as f:
 			f.write(cached_url.get(result.video, force_cache=True, mode='b'))
+		if os.stat('tmp/video.mp4').st_size > 50 * 1024 * 1024:
+			return
 		group = [InputMediaVideo(open('tmp/video.mp4', 'rb'), 
 			caption=cutCaption(result.cap, suffix, 1000), parse_mode='Markdown')]
 		return chat.bot.send_media_group(chat.id, group, timeout = 20*60)
