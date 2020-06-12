@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="album_sender",
-    version="0.0.19",
+    version="0.0.20",
     author="Yunzhi Gao",
     author_email="gaoyunzhi@gmail.com",
     description="Telegram album sender.",

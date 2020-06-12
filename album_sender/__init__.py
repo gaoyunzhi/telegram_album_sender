@@ -56,7 +56,7 @@ def send(chat, url, result, rotate=0):
 			open(cached_url.getFilePath(result.imgs[0]), 'rb'), 
 			caption=cap, parse_mode='Markdown', timeout = 20*60)
 		
-	imgs = pic_cut.getCutImages(result.imgs, 9)	
+	imgs = pic_cut.getCutImages(result.imgs, 10)	
 	imgs = [x for x in imgs if properSize(x)]
 	if imgs:
 		if rotate:
