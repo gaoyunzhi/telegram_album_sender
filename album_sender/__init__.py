@@ -76,3 +76,6 @@ def send(chat, url, result, rotate=0):
 		return [chat.send_message(cutCaption(result.cap, suffix, 4000), 
 			parse_mode='Markdown', timeout = 20*60, 
 			disable_web_page_preview = (not isUrl(result.cap)))]
+
+def send_v2(chat, result, rotate=0):
+	send(chat, result.url, result, rotate=rotate)
