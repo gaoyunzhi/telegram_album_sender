@@ -42,6 +42,7 @@ def send(chat, url, result, rotate=0):
 	suffix = '[source](%s)' % url
 
 	if result.video:
+		os.system('mkdir tmp > /dev/null 2>&1')
 		with open('tmp/video.mp4', 'wb') as f:
 			f.write(cached_url.get(result.video, force_cache=True, mode='b'))
 		if os.stat('tmp/video.mp4').st_size > 50 * 1024 * 1024:
