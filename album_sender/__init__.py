@@ -78,4 +78,4 @@ def send(chat, url, result, rotate=0):
 			disable_web_page_preview = (not isUrl(result.cap)))]
 
 def send_v2(chat, result, rotate=0):
-	send(chat, result.url, result, rotate=rotate)
+	return send(chat, result.url, result, rotate=rotate)
