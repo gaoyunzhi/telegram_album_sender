@@ -15,11 +15,10 @@ chat = tele.bot.get_chat(-1001198682178)
 
 def test(url):
 	result = weibo_2_album.get(url)
-	print(result.imgs)
-	album_sender.send(chat, url, result)	
+	album_sender.send_v2(chat, result)	
 	
 if __name__=='__main__':
-	test('https://m.weibo.cn/status/J2tenmsyM')
+	test('https://m.weibo.cn/detail/4529592491319532#comment')
 	
 
 # TODO: rename the module to album_sender?
