@@ -9,6 +9,7 @@ import cached_url
 import pic_cut
 from telegram_util import cutCaption, isUrl
 import os
+import time
 
 def isAnimated(path):
 	cached_url.get(path, force_cache=True, mode='b')
@@ -56,11 +57,15 @@ def imgRotate(img_path, rotate):
 	if not rotate:
 		return
 	if rotate == True:
+		rotate = 180
 	img = Image.open(img_path)
 	img = img.rotate(rotate, expand=True)
 	img.save(img_path)
 
-def send_v2(chat, result, rotate=0, send_all=False):
+def send_v2(chat, result, rotate=0, send_all=False, time_sleep=0):
+	if time_sleep:
+		time.sleep(time_sleep)
+
 	if result.video:
 		return sendVideo(chat, result)
 		
@@ -70,20 +75,21 @@ def send_v2(chat, result, rotate=0, send_all=False):
 			caption=getCap(result, 1000), parse_mode='Markdown', 
 			timeout=20*60)
 
+	print(len(result.imgs))
 	img_limit = 100 if send_all else 10
 	imgs = pic_cut.getCutImages(result.imgs, img_limit)	
 	imgs = [x for x in imgs if properSize(x)]
 	[imgRotate(x, rotate) for x in imgs]
-	print(len(imgs))
 	if imgs:
-		result = []
+		return_result = []
 		for page in range(1 + int((len(imgs) - 1) / 10)):
 			group = ([InputMediaPhoto(open(imgs[page * 10], 'rb'), 
 				caption=getCap(result, 1000), parse_mode='Markdown')] + 
 				[InputMediaPhoto(open(x, 'rb')) for x in 
-					imgs[page * 10 + 1:page * 10 + 11]])
-			result += chat.bot.send_media_group(chat.id, group, timeout = 20*60)
-		return result
+					imgs[page * 10 + 1:page * 10 + 10]])
+			time.sleep(time_sleep * len(group))
+			return_result += chat.bot.send_media_group(chat.id, group, timeout = 20*60)
+		return return_result
 
 	if result.cap:
 		return [chat.send_message(getCap(result, 4000), 
