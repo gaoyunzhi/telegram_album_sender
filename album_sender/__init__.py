@@ -40,7 +40,10 @@ def shouldSendAnimation(result):
 	return True
 
 def getCap(result, limit):
-	suffix = '[source](%s)' % result.url
+	if result.url:
+		suffix = '[source](%s)' % result.url
+	else:
+		suffix = ''
 	return cutCaption(result.cap, suffix, limit)
 
 def sendVideo(chat, result):
