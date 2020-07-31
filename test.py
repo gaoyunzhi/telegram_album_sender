@@ -18,9 +18,14 @@ chat = tele.bot.get_chat('@web_record')
 def test(url):
 	result = web_2_album.get(url)
 	album_sender.send_v2(chat, result, send_all=True, time_sleep=5)	
+
+def testPicBot():
+	result = Result()
+	result.imgs = ['https://api.telegram.org/file/bot1079222610:AAFeqXw45QT1Ixhclt12ehXtqh8EXRGChK8/documents/file_6475.jpg']
+	album_sender.send_v2(chat, result, send_all=True, time_sleep=5)	
 	
 if __name__=='__main__':
-	test('https://movie.douban.com/subject/27010768/photos?type=R&start=0&sortby=like&size=a&subtype=a')
+	testPicBot()
 	
 
 # TODO: rename the module to album_sender?
