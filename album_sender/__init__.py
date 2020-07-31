@@ -74,8 +74,7 @@ def send_v2(chat, result, rotate=0, send_all=False, time_sleep=0):
 			open(cached_url.getFilePath(result.imgs[0]), 'rb'), 
 			caption=getCap(result, 1000), parse_mode='Markdown', 
 			timeout=20*60)
-
-	print(len(result.imgs))
+		
 	img_limit = 100 if send_all else 10
 	imgs = pic_cut.getCutImages(result.imgs, img_limit)	
 	imgs = [x for x in imgs if properSize(x)]
