@@ -66,9 +66,6 @@ def imgRotate(img_path, rotate):
 	img.save(img_path)
 
 def send_v2(chat, result, rotate=0, send_all=False, time_sleep=0):
-	if time_sleep:
-		time.sleep(time_sleep)
-
 	if result.video:
 		return sendVideo(chat, result)
 		
@@ -89,7 +86,8 @@ def send_v2(chat, result, rotate=0, send_all=False, time_sleep=0):
 				caption=getCap(result, 1000), parse_mode='Markdown')] + 
 				[InputMediaPhoto(open(x, 'rb')) for x in 
 					imgs[page * 10 + 1:page * 10 + 10]])
-			time.sleep(time_sleep * len(group))
+			if page != 0:
+				time.sleep(time_sleep * len(group))
 			return_result += chat.bot.send_media_group(chat.id, group, timeout = 20*60)
 		return return_result
 
