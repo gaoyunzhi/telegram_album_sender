@@ -42,7 +42,8 @@ def shouldSendAnimation(result):
 def getCap(result, limit):
 	if result.parse_mode == 'HTML':
 		# currently, the only use case is repost the telegram post
-		return result.html_cap
+		# later on, this part might need expansion
+		return result.cap_html
 	if result.url:
 		suffix = '[source](%s)' % result.url
 	else:

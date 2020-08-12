@@ -7,7 +7,7 @@ Telegram album sender
 ```
 import album_sender, web_2_album
 result = web_2_album.get(url)
-album_sender.send(chat, url, result, rotate=False)
+album_sender.send_v2(chat, result, rotate=False)
 ```
 
 ## how to install
