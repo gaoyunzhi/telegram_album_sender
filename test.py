@@ -11,9 +11,8 @@ from telegram.ext import Updater
 with open('CREDENTIALS') as f:
 	CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
 tele = Updater(CREDENTIALS['bot_token'], use_context=True)
-# chat = tele.bot.get_chat(-1001198682178)
-# chat = tele.bot.get_chat(-1001198682178)
-chat = tele.bot.get_chat('@web_record')
+chat = tele.bot.get_chat(-1001198682178)
+# chat = tele.bot.get_chat('@web_record')
 
 def test(url):
 	result = web_2_album.get(url)
@@ -21,7 +20,10 @@ def test(url):
 
 def testPicBot():
 	result = Result()
-	album_sender.send_v2(chat, result, send_all=True, time_sleep=5)	
+	result.cap_html = 'test'
+	print(result)
+	r = album_sender.send_v2(chat, result, send_all=True, time_sleep=5)	
+	print(r)
 	
 if __name__=='__main__':
 	testPicBot()
