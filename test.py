@@ -21,11 +21,7 @@ def test(url):
 
 def testPicBot():
 	result = Result()
-	result.imgs = ['']
 	album_sender.send_v2(chat, result, send_all=True, time_sleep=5)	
 	
 if __name__=='__main__':
 	testPicBot()
-	
-
-# TODO: rename the module to album_sender?
