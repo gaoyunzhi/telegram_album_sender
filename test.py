@@ -21,7 +21,7 @@ def test(url):
 
 def testPicBot():
 	result = Result()
-	result.imgs = ['https://api.telegram.org/file/bot1079222610:AAFeqXw45QT1Ixhclt12ehXtqh8EXRGChK8/documents/file_6475.jpg']
+	result.imgs = ['']
 	album_sender.send_v2(chat, result, send_all=True, time_sleep=5)	
 	
 if __name__=='__main__':
