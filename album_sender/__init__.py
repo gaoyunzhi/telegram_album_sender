@@ -40,6 +40,9 @@ def shouldSendAnimation(result):
 	return True
 
 def getCap(result, limit):
+	if result.parse_mode == 'HTML':
+		# currently, the only use case is repost the telegram post
+		return result.html_cap
 	if result.url:
 		suffix = '[source](%s)' % result.url
 	else:
@@ -53,7 +56,7 @@ def sendVideo(chat, result):
 	if os.stat('tmp/video.mp4').st_size > 50 * 1024 * 1024:
 		return []
 	group = [InputMediaVideo(open('tmp/video.mp4', 'rb'), 
-		caption=getCap(result, 1000), parse_mode='Markdown')]
+		caption=getCap(result, 1000), parse_mode=result.parse_mode)]
 	return chat.bot.send_media_group(chat.id, group, timeout = 20*60)
 
 def imgRotate(img_path, rotate):
@@ -72,7 +75,7 @@ def send_v2(chat, result, rotate=0, send_all=False, time_sleep=0):
 	if shouldSendAnimation(result):
 		return chat.bot.send_document(chat.id, 
 			open(cached_url.getFilePath(result.imgs[0]), 'rb'), 
-			caption=getCap(result, 1000), parse_mode='Markdown', 
+			caption=getCap(result, 1000), parse_mode=result.parse_mode, 
 			timeout=20*60)
 		
 	img_limit = 100 if send_all else 10
@@ -83,7 +86,7 @@ def send_v2(chat, result, rotate=0, send_all=False, time_sleep=0):
 		return_result = []
 		for page in range(1 + int((len(imgs) - 1) / 10)):
 			group = ([InputMediaPhoto(open(imgs[page * 10], 'rb'), 
-				caption=getCap(result, 1000), parse_mode='Markdown')] + 
+				caption=getCap(result, 1000), parse_mode=result.parse_mode)] + 
 				[InputMediaPhoto(open(x, 'rb')) for x in 
 					imgs[page * 10 + 1:page * 10 + 10]])
 			if page != 0:
@@ -93,7 +96,7 @@ def send_v2(chat, result, rotate=0, send_all=False, time_sleep=0):
 
 	if result.cap:
 		return [chat.send_message(getCap(result, 4000), 
-			parse_mode='Markdown', timeout = 20*60, 
+			parse_mode=result.parse_mode, timeout = 20*60, 
 			disable_web_page_preview = (not isUrl(result.cap)))]
 
 def send(chat, url, result, rotate=0, send_all=False):
