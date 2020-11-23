@@ -62,15 +62,13 @@ def getMedia(fn, result = None):
 def getMediaGroup(imgs, result):
 	return [getMedia(imgs[0], result)] + [getMedia(img) for img in imgs[1:]]
 
-def send_v2(chat, result, rotate=0, send_all=False, time_sleep=0):	
-	img_limit = 100 if send_all else 10
-
+def send_v2(chat, result, rotate=0, send_all=False, time_sleep=0):
+	# todo: cached_url may want to make sure the video fn ends with mp4...	
 	if result.video:
-		imgs = [result.video] + result.imgs
-	else:
-		imgs = result.imgs
+		return sendVideo(chat, result)
 
-	imgs = pic_cut.getCutImages(imgs, img_limit)	
+	img_limit = 100 if send_all else 10
+	imgs = pic_cut.getCutImages(result.imgs, img_limit)	
 	imgs = [x for x in imgs if properSize(x)]
 	[imgRotate(x, rotate) for x in imgs]
 	
