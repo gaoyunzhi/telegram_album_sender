@@ -26,4 +26,5 @@ def testPicBot():
 	print(r)
 	
 if __name__=='__main__':
-	testPicBot()
+	# test('https://www.douban.com/people/2627485/status/3185647338/')
+	test('https://www.douban.com/people/60997951/status/3185239306/')
