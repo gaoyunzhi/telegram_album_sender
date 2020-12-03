@@ -28,4 +28,4 @@ def testPicBot():
 if __name__=='__main__':
 	# test('https://www.douban.com/people/2627485/status/3185647338/')
 	# test('https://www.douban.com/people/60997951/status/3185239306/')
-	test('https://m.weibo.cn/status/Ju87E3Hms')
+	test('https://m.weibo.cn/detail/4578069887325941')
