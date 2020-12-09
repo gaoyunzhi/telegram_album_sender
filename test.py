@@ -11,11 +11,12 @@ from telegram.ext import Updater
 with open('CREDENTIALS') as f:
 	CREDENTIALS = yaml.load(f, Loader=yaml.FullLoader)
 tele = Updater(CREDENTIALS['bot_token'], use_context=True)
-chat = tele.bot.get_chat(-1001198682178)
-# chat = tele.bot.get_chat('@web_record')
+# chat = tele.bot.get_chat(-1001198682178)
+chat = tele.bot.get_chat('@web_record')
 
 def test(url):
 	result = weibo_2_album.get(url)
+	print(result)
 	album_sender.send_v2(chat, result, send_all=True, time_sleep=5)	
 
 def testPicBot():
@@ -28,4 +29,4 @@ def testPicBot():
 if __name__=='__main__':
 	# test('https://www.douban.com/people/2627485/status/3185647338/')
 	# test('https://www.douban.com/people/60997951/status/3185239306/')
-	test('https://m.weibo.cn/detail/4578069887325941')
+	test('https://m.weibo.cn/status/4569486260444196')
