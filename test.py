@@ -16,9 +16,9 @@ chat = tele.bot.get_chat(-1001198682178)
 # chat = tele.bot.get_chat('@douban_read')
 
 def test(url):
-	result = web_2_album.get(url)
+	result = weibo_2_album.get(url)
 	print(result)
-	album_sender.send_v2(chat, result, send_all=True, no_cut=True, time_sleep=5)	
+	album_sender.send_v2(chat, result, send_all=True, time_sleep=5)	
 
 def testPicBot():
 	result = Result()
@@ -28,6 +28,4 @@ def testPicBot():
 	print(r)
 	
 if __name__=='__main__':
-	test('https://www.douban.com/people/2627485/status/3185647338/')
-	# test('https://www.douban.com/people/60997951/status/3185239306/')
-	# test('https://www.douban.com/people/32412923/status/3206418078/')
+	test('https://m.weibo.cn/status/JA0aLzJUv')

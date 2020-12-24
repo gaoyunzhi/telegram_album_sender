@@ -66,7 +66,7 @@ def getImage(img):
 	cached_url.get(img, force_cache=True, mode='b')
 	return cached_url.getFilePath(img)
 
-def send_v2(chat, result, rotate=0, send_all=False, time_sleep=0, no_cut=False):
+def send_v2(chat, result, rotate=0, send_all=False, time_sleep=0, no_cut=False, size_factor = None):
 	# todo: cached_url may want to make sure the video fn ends with mp4...	
 	if result.video:
 		return sendVideo(chat, result)
@@ -75,7 +75,10 @@ def send_v2(chat, result, rotate=0, send_all=False, time_sleep=0, no_cut=False):
 	if no_cut:
 		imgs = [getImage(img) for img in result.imgs]
 	else:
-		imgs = pic_cut.getCutImages(result.imgs, img_limit)	
+		args = {}
+		if size_factor:
+			args['size_factor'] = size_factor
+		imgs = pic_cut.getCutImages(result.imgs, img_limit, **args)	
 	imgs = [x for x in imgs if properSize(x)]
 	[imgRotate(x, rotate) for x in imgs]
 	
